@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "149651353441",
+    "project_id": "c2cnocevents",
+    "storage_bucket": "c2cnocevents.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149651353441:android:b25b2e8e86a7aef8615f20",
+        "android_client_info": {
+          "package_name": "com.mycompany.CounterApp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbS_k9WpOR-gnxt7PbuS1K8l3OTGeKkCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

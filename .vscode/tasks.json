@@ -1,0 +1,78 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Flutter: Get Dependencies",
+			"type": "shell",
+			"command": "${workspaceFolder}/.vscode/flutter/bin/flutter",
+			"args": [
+				"pub",
+				"get"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Flutter: Run Web (Live Preview)",
+			"type": "shell",
+			"command": "${workspaceFolder}/.vscode/flutter/bin/flutter",
+			"args": [
+				"run",
+				"-d",
+				"chrome",
+				"--web-port",
+				"3000"
+			],
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Flutter: Run iOS Simulator",
+			"type": "shell",
+			"command": "${workspaceFolder}/.vscode/flutter/bin/flutter",
+			"args": [
+				"run",
+				"-d",
+				"ios"
+			],
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Flutter: Run Android Emulator",
+			"type": "shell",
+			"command": "${workspaceFolder}/.vscode/flutter/bin/flutter",
+			"args": [
+				"run",
+				"-d",
+				"android"
+			],
+			"group": "build",
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Flutter: Clean",
+			"type": "shell",
+			"command": "${workspaceFolder}/.vscode/flutter/bin/flutter",
+			"args": [
+				"clean"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Flutter: Build Web",
+			"type": "shell",
+			"command": "${workspaceFolder}/.vscode/flutter/bin/flutter",
+			"args": [
+				"build",
+				"web"
+			],
+			"group": "build",
+			"problemMatcher": []
+		}
+	]
+}
