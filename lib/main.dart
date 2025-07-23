@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:c2c_noc_events/theme.dart';
-import 'package:c2c_noc_events/screens/home_screen.dart';
+import 'package:c2c_noc_events/screens/main_navigation_screen.dart';
 import 'package:c2c_noc_events/config/coda_config.dart';
 import 'firebase_options.dart';
 
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
-      home: const HomeScreen(),
+      home: const MainNavigationScreen(),
     );
   }
 }
