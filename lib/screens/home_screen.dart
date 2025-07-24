@@ -5,6 +5,7 @@ import 'package:c2c_noc_events/services/event_service.dart';
 import 'package:c2c_noc_events/services/notification_service.dart';
 import 'package:c2c_noc_events/widgets/event_card.dart';
 import 'package:c2c_noc_events/screens/notification_settings_screen.dart';
+import 'package:c2c_noc_events/screens/fcm_debug_screen.dart';
 import 'package:c2c_noc_events/models/notification_preference.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -267,22 +268,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     color: colorScheme.onSurface.withValues(alpha: 0.7),
                   ),
                 ),
-                const SizedBox(height: 4),
-                // Data source indicator
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: _eventService.isCodaEnabled ? Colors.green.shade100 : Colors.blue.shade100,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    'Data: ${_eventService.dataSource}',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: _eventService.isCodaEnabled ? Colors.green.shade800 : Colors.blue.shade800,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
@@ -297,6 +282,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                   );
                   break;
+                case 'fcm_debug':
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FCMDebugScreen(),
+                    ),
+                  );
+                  break;
                 case 'refresh':
                   _loadEvents();
                   break;
@@ -308,6 +301,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 child: ListTile(
                   leading: Icon(Icons.notifications_outlined),
                   title: Text('Notification Settings'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'fcm_debug',
+                child: ListTile(
+                  leading: Icon(Icons.bug_report),
+                  title: Text('FCM Debug'),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
