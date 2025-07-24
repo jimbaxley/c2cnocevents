@@ -109,7 +109,7 @@ class FCMService {
     await _localNotifications
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
-    
+
     print('✅ Local notifications setup complete');
   }
 
@@ -118,7 +118,7 @@ class FCMService {
     print('📱 Received foreground message: ${message.messageId}');
     print('📱 Title: ${message.notification?.title}');
     print('📱 Body: ${message.notification?.body}');
-    
+
     // Show local notification when app is in foreground
     await _showLocalNotification(message);
   }
