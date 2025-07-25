@@ -4,9 +4,9 @@ import 'package:c2c_noc_events/models/event.dart';
 import 'package:c2c_noc_events/services/event_service.dart';
 import 'package:c2c_noc_events/services/notification_service.dart';
 import 'package:c2c_noc_events/widgets/event_card.dart';
-import 'package:c2c_noc_events/screens/notification_settings_screen.dart';
-import 'package:c2c_noc_events/screens/fcm_debug_screen.dart';
 import 'package:c2c_noc_events/models/notification_preference.dart';
+import 'package:c2c_noc_events/widgets/notification_bell.dart';
+import 'package:c2c_noc_events/screens/learn_more_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -52,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Future<void> _initializeApp() async {
-    await _notificationService.initialize();
+    // await _notificationService.initialize();
     await _loadEvents();
     _fadeController.forward();
   }
@@ -83,31 +83,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         return matchesCategory;
       }).toList();
     });
-  }
-
-  Future<void> _toggleNotification(Event event) async {
-    final isEnabled = !event.isNotificationEnabled;
-
-    if (isEnabled) {
-      await _showNotificationDialog(event);
-    } else {
-      await _notificationService.cancelEventNotification(event.id);
-      final preference = NotificationPreference(
-        eventId: event.id,
-        isEnabled: false,
-        notifyBefore: const Duration(hours: 1),
-        type: 'reminder',
-      );
-      await _notificationService.saveNotificationPreference(preference);
-
-      setState(() {
-        final index = _events.indexWhere((e) => e.id == event.id);
-        if (index != -1) {
-          _events[index] = event.copyWith(isNotificationEnabled: false);
-        }
-      });
-      _filterEvents();
-    }
   }
 
   void _handleSignUp(Event event) async {
@@ -148,76 +123,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     );
   }
 
-  Future<void> _showNotificationDialog(Event event) async {
-    Duration selectedDuration = const Duration(hours: 1);
-
-    final result = await showDialog<Duration>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('📱 Notification Settings'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('When would you like to be notified about "${event.title}"?'),
-            const SizedBox(height: 16),
-            DropdownButton<Duration>(
-              value: selectedDuration,
-              isExpanded: true,
-              items: const [
-                DropdownMenuItem(value: Duration(minutes: 30), child: Text('30 minutes before')),
-                DropdownMenuItem(value: Duration(hours: 1), child: Text('1 hour before')),
-                DropdownMenuItem(value: Duration(hours: 2), child: Text('2 hours before')),
-                DropdownMenuItem(value: Duration(hours: 24), child: Text('1 day before')),
-                DropdownMenuItem(value: Duration(days: 3), child: Text('3 days before')),
-              ],
-              onChanged: (Duration? value) {
-                if (value != null) {
-                  selectedDuration = value;
-                }
-              },
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context, selectedDuration),
-            child: const Text('Enable'),
-          ),
-        ],
-      ),
-    );
-
-    if (result != null) {
-      await _notificationService.scheduleEventNotification(event, result);
-      final preference = NotificationPreference(
-        eventId: event.id,
-        isEnabled: true,
-        notifyBefore: result,
-        type: 'reminder',
-      );
-      await _notificationService.saveNotificationPreference(preference);
-
-      setState(() {
-        final index = _events.indexWhere((e) => e.id == event.id);
-        if (index != -1) {
-          _events[index] = event.copyWith(isNotificationEnabled: true);
-        }
-      });
-      _filterEvents();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('🔔 Notification scheduled for ${event.title}'),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -254,78 +159,34 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'C2C+NoC',
-                  style: theme.textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: colorScheme.onSurface,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  'Turn your passion into action!',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurface.withValues(alpha: 0.7),
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'C2C+NoC',
+                      style: theme.textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.onSurface,
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      icon: Icon(Icons.info_outline, color: colorScheme.primary),
+                      tooltip: 'Learn More',
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => const LearnMoreScreen()),
+                        );
+                      },
+                      padding: EdgeInsets.zero, // keeps icon close to text
+                      constraints: BoxConstraints(), // removes extra space
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
-          PopupMenuButton<String>(
-            onSelected: (value) async {
-              switch (value) {
-                case 'notifications':
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const NotificationSettingsScreen(),
-                    ),
-                  );
-                  break;
-                case 'fcm_debug':
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const FCMDebugScreen(),
-                    ),
-                  );
-                  break;
-                case 'refresh':
-                  _loadEvents();
-                  break;
-              }
-            },
-            itemBuilder: (context) => [
-              const PopupMenuItem(
-                value: 'notifications',
-                child: ListTile(
-                  leading: Icon(Icons.notifications_outlined),
-                  title: Text('Notification Settings'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'fcm_debug',
-                child: ListTile(
-                  leading: Icon(Icons.bug_report),
-                  title: Text('FCM Debug'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-              const PopupMenuItem(
-                value: 'refresh',
-                child: ListTile(
-                  leading: Icon(Icons.refresh),
-                  title: Text('Refresh Events'),
-                  contentPadding: EdgeInsets.zero,
-                ),
-              ),
-            ],
-            child: Icon(
-              Icons.settings,
-              color: colorScheme.onSurface,
-            ),
-          ),
+          const NotificationBell(),
         ],
       ),
     );
@@ -432,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           return EventCard(
             event: event,
             onSignUp: () => _handleSignUp(event),
-            onNotification: () => _toggleNotification(event),
+            //onNotification: () => _toggleNotification(event),
           );
         },
       ),

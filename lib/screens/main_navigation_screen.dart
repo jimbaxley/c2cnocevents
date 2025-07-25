@@ -10,7 +10,7 @@ class MainNavigationScreen extends StatefulWidget {
 }
 
 class _MainNavigationScreenState extends State<MainNavigationScreen> {
-  int _currentIndex = 0;
+  final int _currentIndex = 0;
 
   final List<Widget> _screens = [
     const HomeScreen(),
@@ -27,34 +27,34 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         index: _currentIndex,
         children: _screens,
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: colorScheme.surface,
-        selectedItemColor: colorScheme.primary,
-        unselectedItemColor: colorScheme.onSurface.withValues(alpha: 0.6),
-        selectedLabelStyle: theme.textTheme.bodySmall?.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: theme.textTheme.bodySmall,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.event),
-            activeIcon: Icon(Icons.event),
-            label: 'Events',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.info_outline),
-            activeIcon: Icon(Icons.info),
-            label: 'Learn More',
-          ),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: _currentIndex,
+      //   onTap: (index) {
+      //     setState(() {
+      //       _currentIndex = index;
+      //     });
+      //   },
+      //   type: BottomNavigationBarType.fixed,
+      //   backgroundColor: colorScheme.surface,
+      //   selectedItemColor: colorScheme.primary,
+      //   unselectedItemColor: colorScheme.onSurface.withValues(alpha: 0.6),
+      //   selectedLabelStyle: theme.textTheme.bodySmall?.copyWith(
+      //     fontWeight: FontWeight.w600,
+      //   ),
+      //   unselectedLabelStyle: theme.textTheme.bodySmall,
+      //   items: const [
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.event),
+      //      activeIcon: Icon(Icons.event),
+      //      label: 'Events',
+      //    ),
+      //    BottomNavigationBarItem(
+      //      icon: Icon(Icons.info_outline),
+      //      activeIcon: Icon(Icons.info),
+      //      label: 'Learn More',
+      //    ),
+      //  ],
+      //),
     );
   }
 }

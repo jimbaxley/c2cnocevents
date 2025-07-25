@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:c2c_noc_events/models/event.dart';
 import 'package:c2c_noc_events/config/coda_config.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class CodaService {
   static final CodaService _instance = CodaService._internal();
@@ -151,17 +152,17 @@ class CodaService {
     return value.toString();
   }
 
-  /// Parse date and convert from UTC to Eastern Time
+  /// Parse date and convert from UTC to Eastern Time using timezone package
   DateTime _parseDate(String? dateStr) {
     if (dateStr == null || dateStr.isEmpty) return DateTime.now();
 
     try {
       // Parse the date string (Coda typically returns UTC timestamps)
-      DateTime utcDate = DateTime.parse(dateStr);
+      DateTime utcDate = DateTime.parse(dateStr).toUtc();
 
-      // Convert from UTC to Eastern Time (EDT is UTC-4, EST is UTC-5)
-      // For simplicity, we'll use EDT (UTC-4) which is more common during event season
-      DateTime easternTime = utcDate.subtract(const Duration(hours: 4));
+      // Convert from UTC to Eastern Time using timezone package
+      final eastern = tz.getLocation('America/New_York');
+      final easternTime = tz.TZDateTime.from(utcDate, eastern);
 
       return easternTime;
     } catch (e) {

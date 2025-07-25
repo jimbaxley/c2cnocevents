@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'notification_storage.dart';
 
 class FCMService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
@@ -119,6 +120,11 @@ class FCMService {
     print('📱 Title: ${message.notification?.title}');
     print('📱 Body: ${message.notification?.body}');
 
+    // Store notification in local storage
+    final notification = NotificationItem.fromRemoteMessage(message);
+    NotificationStorage.addNotification(notification);
+    print('💾 Stored notification: ${notification.title}');
+
     // Show local notification when app is in foreground
     await _showLocalNotification(message);
   }
@@ -222,5 +228,10 @@ class FCMService {
 // Background message handler (must be top-level function)
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // Background message received - Firebase handles display automatically
+  print('🔔 Background message received: ${message.notification?.title}');
+
+  // Store notification in local storage
+  final notification = NotificationItem.fromRemoteMessage(message);
+  NotificationStorage.addNotification(notification);
+  print('💾 Stored background notification: ${notification.title}');
 }

@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:c2c_noc_events/models/event.dart';
 import 'package:c2c_noc_events/services/notification_service.dart';
 import 'package:c2c_noc_events/models/notification_preference.dart';
+import 'package:add_2_calendar/add_2_calendar.dart' as add2cal;
 
 class EventDetailScreen extends StatefulWidget {
   final Event event;
@@ -523,13 +524,22 @@ class _EventDetailScreenState extends State<EventDetailScreen> with TickerProvid
           SizedBox(
             width: double.infinity,
             child: ElevatedButton.icon(
-              onPressed: _toggleNotification,
+              onPressed: () {
+                final calendarEvent = add2cal.Event(
+                  title: widget.event.title,
+                  description: widget.event.description,
+                  location: widget.event.location,
+                  startDate: widget.event.startDate,
+                  endDate: widget.event.endDate,
+                );
+                add2cal.Add2Calendar.addEvent2Cal(calendarEvent);
+              },
               icon: Icon(
-                _isNotificationEnabled ? Icons.notifications_off : Icons.notifications,
+                Icons.calendar_today,
                 color: colorScheme.onPrimary,
               ),
               label: Text(
-                _isNotificationEnabled ? 'Disable Notifications' : 'Enable Notifications',
+                'Add to Calendar',
                 style: TextStyle(color: colorScheme.onPrimary),
               ),
               style: ElevatedButton.styleFrom(
@@ -538,28 +548,6 @@ class _EventDetailScreenState extends State<EventDetailScreen> with TickerProvid
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: OutlinedButton.icon(
-              onPressed: _sendInstantNotification,
-              icon: Icon(
-                Icons.send,
-                color: colorScheme.primary,
-              ),
-              label: Text(
-                'Send Test Notification',
-                style: TextStyle(color: colorScheme.primary),
-              ),
-              style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                side: BorderSide(color: colorScheme.primary),
               ),
             ),
           ),

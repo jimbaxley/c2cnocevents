@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:c2c_noc_events/models/event.dart';
 import 'package:c2c_noc_events/services/image_service.dart';
+import 'package:add_2_calendar/add_2_calendar.dart' as add2cal;
+import 'package:timezone/timezone.dart' as tz;
 
 class EventCard extends StatefulWidget {
   final Event event;
@@ -200,64 +202,72 @@ class _EventCardState extends State<EventCard> {
           const SizedBox(height: 16),
 
           // Action buttons row
-          Row(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Notification button
-              Expanded(
-                flex: 1,
-                child: OutlinedButton.icon(
-                  onPressed: widget.onNotification,
-                  icon: Icon(
-                    widget.event.isNotificationEnabled ? Icons.notifications_active : Icons.notifications_none,
-                    size: 16,
+              // Add to Calendar button
+
+              OutlinedButton.icon(
+                onPressed: () {
+                  final eastern = tz.getLocation('America/New_York');
+                  final startDateEastern = tz.TZDateTime.from(widget.event.startDate.toUtc(), eastern);
+                  final endDateEastern = tz.TZDateTime.from(
+                    (widget.event.endDate ?? widget.event.startDate.add(const Duration(hours: 1))).toUtc(),
+                    eastern,
+                  );
+                  final calendarEvent = add2cal.Event(
+                    title: widget.event.title,
+                    description: widget.event.description,
+                    location: widget.event.location,
+                    startDate: startDateEastern,
+                    endDate: endDateEastern ?? widget.event.startDate.add(const Duration(hours: 1)),
+                  );
+                  add2cal.Add2Calendar.addEvent2Cal(calendarEvent);
+                },
+                icon: Icon(
+                  Icons.calendar_today,
+                  size: 16,
+                ),
+                label: Text(
+                  'ADD TO CALENDAR',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 12,
+                    letterSpacing: 0.5,
                   ),
-                  label: Text(
-                    widget.event.isNotificationEnabled ? 'ON' : 'NOTIFY',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 12,
-                      letterSpacing: 0.5,
-                    ),
+                ),
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: _getCategoryColor(widget.event.category),
+                  side: BorderSide(
+                    color: _getCategoryColor(widget.event.category),
+                    width: 1,
                   ),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: widget.event.isNotificationEnabled
-                        ? _getCategoryColor(widget.event.category)
-                        : Colors.grey.shade600,
-                    side: BorderSide(
-                      color: widget.event.isNotificationEnabled
-                          ? _getCategoryColor(widget.event.category)
-                          : Colors.grey.shade400,
-                      width: 1,
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
                 ),
               ),
-              const SizedBox(width: 12),
+
+              const SizedBox(height: 12),
               // Sign up button
-              Expanded(
-                flex: 2,
-                child: ElevatedButton(
-                  onPressed: widget.onSignUp,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: _getSignUpButtonColor(widget.event.category),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    elevation: 0,
+              ElevatedButton(
+                onPressed: widget.onSignUp,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _getSignUpButtonColor(widget.event.category),
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Text(
-                    'SIGN UP NOW',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      letterSpacing: 0.5,
-                    ),
+                  elevation: 0,
+                ),
+                child: Text(
+                  'SIGN UP NOW',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    letterSpacing: 0.5,
                   ),
                 ),
               ),

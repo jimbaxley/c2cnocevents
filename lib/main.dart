@@ -4,7 +4,9 @@ import 'package:c2c_noc_events/theme.dart';
 import 'package:c2c_noc_events/screens/main_navigation_screen.dart';
 import 'package:c2c_noc_events/config/coda_config.dart';
 import 'package:c2c_noc_events/services/fcm_service.dart';
+import 'package:c2c_noc_events/services/notification_storage.dart';
 import 'firebase_options.dart';
+import 'package:timezone/data/latest.dart' as tzdata;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,6 +21,12 @@ void main() async {
 
   // Initialize Firebase Cloud Messaging
   await FCMService.initialize();
+
+  // Add some sample notifications for testing (remove in production)
+  NotificationStorage.addSampleNotifications();
+
+  //timezone initialization
+  tzdata.initializeTimeZones();
 
   runApp(const MyApp());
 }
