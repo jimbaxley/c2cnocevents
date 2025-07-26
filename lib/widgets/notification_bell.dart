@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../screens/notification_settings_screen.dart';
 import '../services/notification_storage.dart';
 import '../widgets/notification_detail_modal.dart';
 import '../services/notification_service.dart';
@@ -45,6 +44,9 @@ class _NotificationBellState extends State<NotificationBell> {
   }
 
   void _showNotificationMenu() {
+    final RenderBox button = context.findRenderObject() as RenderBox;
+    final Offset offset = button.localToGlobal(Offset.zero);
+    final Size size = button.size;
     // Build dynamic notification items
     List<PopupMenuEntry<String>> menuItems = [];
 
@@ -198,9 +200,9 @@ class _NotificationBellState extends State<NotificationBell> {
             ),
             StatefulBuilder(
               builder: (context, setState) => Switch(
-                value: isSubscribedToEvents,
+                value: isSubscribedToPhoneBanks,
                 onChanged: (val) {
-                  setState(() => isSubscribedToEvents = val);
+                  setState(() => isSubscribedToPhoneBanks = val);
                   // Call your subscribe/unsubscribe logic here
                   NotificationService.subscribeToTopic('phonebanks', val);
                 },
@@ -227,9 +229,9 @@ class _NotificationBellState extends State<NotificationBell> {
             ),
             StatefulBuilder(
               builder: (context, setState) => Switch(
-                value: isSubscribedToEvents,
+                value: isSubscribedToCanvassing,
                 onChanged: (val) {
-                  setState(() => isSubscribedToEvents = val);
+                  setState(() => isSubscribedToCanvassing = val);
                   // Call your subscribe/unsubscribe logic here
                   NotificationService.subscribeToTopic('canvassing', val);
                 },
@@ -243,7 +245,12 @@ class _NotificationBellState extends State<NotificationBell> {
 
     showMenu(
       context: context,
-      position: const RelativeRect.fromLTRB(100, 100, 0, 0),
+      position: RelativeRect.fromLTRB(
+        offset.dx, // left
+        offset.dy + size.height, // top (below the bell)
+        offset.dx + size.width, // right
+        offset.dy, // bottom
+      ),
       items: menuItems,
     ).then((value) {
       if (value != null) {
@@ -277,38 +284,6 @@ class _NotificationBellState extends State<NotificationBell> {
     switch (value) {
       case 'clear_all':
         _showClearAllConfirmation();
-        break;
-      case 'topic_events':
-      case 'topic_phonebank':
-      case 'topic_canvass':
-        // Handle topic subscription toggle
-        String topicName = value.replaceFirst('topic_', '');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Topic: $topicName (subscribed)'),
-            duration: const Duration(seconds: 2),
-            action: SnackBarAction(
-              label: 'Unsubscribe',
-              onPressed: () {
-                // TODO: Implement unsubscribe functionality
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('Unsubscribed from $topicName'),
-                    duration: const Duration(seconds: 2),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-        break;
-      case 'settings':
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const NotificationSettingsScreen(),
-          ),
-        );
         break;
     }
   }

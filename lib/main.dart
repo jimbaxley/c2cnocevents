@@ -22,8 +22,8 @@ void main() async {
   // Initialize Firebase Cloud Messaging
   await FCMService.initialize();
 
-  // Add some sample notifications for testing (remove in production)
-  NotificationStorage.addSampleNotifications();
+// load notifications from storage
+  await NotificationStorage.loadNotifications();
 
   //timezone initialization
   tzdata.initializeTimeZones();

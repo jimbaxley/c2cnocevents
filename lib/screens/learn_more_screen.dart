@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:c2c_noc_events/widgets/fcm_status_widget.dart';
+//import 'package:c2c_noc_events/widgets/fcm_status_widget.dart';
 
 class LearnMoreScreen extends StatelessWidget {
   const LearnMoreScreen({super.key});

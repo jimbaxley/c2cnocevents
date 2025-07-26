@@ -1,17 +1,40 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'notification_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:math';
 
 class FCMService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  static final FlutterLocalNotificationsPlugin _localNotifications = FlutterLocalNotificationsPlugin();
+
+// Helper to get or generate a device identifier
+  static Future<String> getDeviceId() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? deviceId = prefs.getString('device_id');
+    if (deviceId == null) {
+      deviceId = _generateRandomId();
+      await prefs.setString('device_id', deviceId);
+    }
+    return deviceId;
+  }
+
+  static String _generateRandomId() {
+    final rand = Random();
+    return List.generate(16, (_) => rand.nextInt(256).toRadixString(16).padLeft(2, '0')).join();
+  }
+
+// Send token and device ID to backend
+  static Future<void> registerToken(String token) async {
+    final deviceId = await getDeviceId();
+    print('🔄 Registering token for device: $deviceId');
+    // TODO: Send token and deviceId to your backend API
+    // Example:
+    // await ApiService.registerFcmToken(token, deviceId);
+  }
 
   // Initialize FCM
   static Future<void> initialize() async {
-    print('🔄 Starting FCM initialization...');
     try {
       // Request permission for notifications
-      print('📱 Requesting notification permissions...');
       NotificationSettings settings = await _messaging.requestPermission(
         alert: true,
         announcement: false,
@@ -22,34 +45,15 @@ class FCMService {
         sound: true,
       );
 
-      print('📱 Permission status: ${settings.authorizationStatus}');
-      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-        print('✅ User granted permission');
-      } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-        print('✅ User granted provisional permission');
-      } else {
-        print('❌ User declined or has not accepted permission');
-      }
-
-      // Initialize local notifications
-      print('🔔 Initializing local notifications...');
-      await _initializeLocalNotifications();
-      print('✅ Local notifications initialized');
-
       // Get FCM token
-      print('🔑 Getting FCM token...');
       String? token = await getToken();
-      if (token != null && token.isNotEmpty) {
-        print('✅ FCM token obtained: ${token.substring(0, 20)}...');
-        // TODO: Send this token to your server to store for targeted messaging
-      } else {
-        print('❌ Failed to get FCM token');
+      if (token != null) {
+        await registerToken(token);
       }
 
       // Listen for token refresh
-      _messaging.onTokenRefresh.listen((newToken) {
-        print('🔄 FCM token refreshed');
-        // TODO: Send updated token to your server
+      _messaging.onTokenRefresh.listen((newToken) async {
+        await registerToken(newToken);
       });
 
       // Handle foreground messages
@@ -63,10 +67,7 @@ class FCMService {
       FirebaseMessaging.onMessageOpenedApp.listen(_handleMessageOpenedApp);
 
       // Auto-subscribe to events topic
-      print('📝 Subscribing to events topic...');
       await subscribeToTopic('events');
-
-      print('✅ FCM Service initialized successfully');
     } catch (e) {
       // FCM initialization failed - log for debugging
       print('❌ FCM initialization error: $e');
@@ -74,110 +75,23 @@ class FCMService {
     }
   }
 
-  // Initialize local notifications
-  static Future<void> _initializeLocalNotifications() async {
-    print('🔔 Setting up Android notification settings...');
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-
-    print('🍎 Setting up iOS notification settings...');
-    const DarwinInitializationSettings initializationSettingsIOS = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-    );
-
-    const InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsIOS,
-    );
-
-    print('🔔 Initializing local notifications plugin...');
-    await _localNotifications.initialize(
-      initializationSettings,
-      onDidReceiveNotificationResponse: _onNotificationTapped,
-    );
-
-    print('📱 Creating Android notification channel...');
-    // Create notification channel for Android
-    const AndroidNotificationChannel channel = AndroidNotificationChannel(
-      'c2c_events_channel',
-      'C2C Events Notifications',
-      description: 'Notifications for C2C+NoC Events',
-      importance: Importance.high,
-    );
-
-    await _localNotifications
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-
-    print('✅ Local notifications setup complete');
-  }
-
   // Handle foreground messages
   static Future<void> _handleForegroundMessage(RemoteMessage message) async {
-    print('📱 Received foreground message: ${message.messageId}');
-    print('📱 Title: ${message.notification?.title}');
-    print('📱 Body: ${message.notification?.body}');
-
-    // Store notification in local storage
+    print('📨 Foreground FCM message received:');
+    print('  Title: \\${message.notification?.title}');
+    print('  Body: \\${message.notification?.body}');
+    print('  Data: \\${message.data}');
     final notification = NotificationItem.fromRemoteMessage(message);
-    NotificationStorage.addNotification(notification);
-    print('💾 Stored notification: ${notification.title}');
-
-    // Show local notification when app is in foreground
-    await _showLocalNotification(message);
-  }
-
-  // Handle notification tap
-  static void _onNotificationTapped(NotificationResponse response) {
-    // TODO: Navigate to specific screen based on notification data
+    print('📥 Creating NotificationItem:');
+    print('  Title: \\${notification.title}');
+    print('  Body: \\${notification.body}');
+    await NotificationStorage.addNotification(notification);
+    print('💾 Notification added to storage (foreground)');
   }
 
   // Handle message when app is opened from notification
   static void _handleMessageOpenedApp(RemoteMessage message) {
     // TODO: Navigate to specific screen based on message data
-  }
-
-  // Show local notification
-  static Future<void> _showLocalNotification(RemoteMessage message) async {
-    print('🔔 Attempting to show local notification...');
-    final String title = message.notification?.title ?? 'C2C+NoC Events';
-    final String body = message.notification?.body ?? 'New notification';
-    print('🔔 Title: $title, Body: $body');
-
-    const AndroidNotificationDetails androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'c2c_events_channel',
-      'C2C Events Notifications',
-      channelDescription: 'Notifications for C2C+NoC Events',
-      importance: Importance.high,
-      priority: Priority.high,
-      showWhen: true,
-    );
-
-    const DarwinNotificationDetails iOSPlatformChannelSpecifics = DarwinNotificationDetails(
-      presentAlert: true,
-      presentBadge: true,
-      presentSound: true,
-    );
-
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics,
-    );
-
-    try {
-      await _localNotifications.show(
-        message.hashCode,
-        title,
-        body,
-        platformChannelSpecifics,
-        payload: message.data.toString(),
-      );
-      print('✅ Local notification shown successfully');
-    } catch (e) {
-      print('❌ Error showing local notification: $e');
-    }
   }
 
   // Get current FCM token
@@ -228,10 +142,14 @@ class FCMService {
 // Background message handler (must be top-level function)
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('🔔 Background message received: ${message.notification?.title}');
-
-  // Store notification in local storage
+  print('🔔 Background FCM message received:');
+  print('  Title: \\${message.notification?.title}');
+  print('  Body: \\${message.notification?.body}');
+  print('  Data: \\${message.data}');
   final notification = NotificationItem.fromRemoteMessage(message);
-  NotificationStorage.addNotification(notification);
-  print('💾 Stored background notification: ${notification.title}');
+  print('📥 Creating NotificationItem (background):');
+  print('  Title: \\${notification.title}');
+  print('  Body: \\${notification.body}');
+  await NotificationStorage.addNotification(notification);
+  print('💾 Notification added to storage (background)');
 }

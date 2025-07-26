@@ -170,6 +170,13 @@ ThemeData get darkTheme => ThemeData(
         onSurface: DarkModeColors.darkOnSurface,
       ),
       brightness: Brightness.dark,
+      popupMenuTheme: PopupMenuThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16), // <-- Rounded corners
+        ),
+
+        color: const Color.fromARGB(255, 34, 19, 34), // <-- Your desired dark background
+      ),
       appBarTheme: AppBarTheme(
         backgroundColor: DarkModeColors.darkAppBarBackground,
         foregroundColor: DarkModeColors.darkOnPrimaryContainer,

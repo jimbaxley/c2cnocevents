@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:c2c_noc_events/models/event.dart';
 import 'package:c2c_noc_events/services/event_service.dart';
-import 'package:c2c_noc_events/services/notification_service.dart';
+//import 'package:c2c_noc_events/services/notification_service.dart';
 import 'package:c2c_noc_events/widgets/event_card.dart';
-import 'package:c2c_noc_events/models/notification_preference.dart';
 import 'package:c2c_noc_events/widgets/notification_bell.dart';
 import 'package:c2c_noc_events/screens/learn_more_screen.dart';
 
@@ -17,7 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final EventService _eventService = EventService();
-  final NotificationService _notificationService = NotificationService();
+  //final NotificationService _notificationService = NotificationService();
 
   List<Event> _events = [];
   List<Event> _filteredEvents = [];
