@@ -5,6 +5,36 @@ import 'dart:math';
 import 'package:c2c_noc_events/widgets/notification_detail_modal.dart';
 import 'package:c2c_noc_events/main.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/services.dart';
+
+// iOS notification tap method channel
+const MethodChannel _notificationTapChannel = MethodChannel('c2c_noc_events/notification_tap');
+
+void setupiOSNotificationTapListener() {
+  _notificationTapChannel.setMethodCallHandler((call) async {
+    if (call.method == 'notificationTapped' && call.arguments != null) {
+      final Map<dynamic, dynamic> payload = call.arguments;
+      final title = payload['title'] ??
+          (payload['aps'] != null && payload['aps']['alert'] != null ? payload['aps']['alert']['title'] : null) ??
+          'No Title';
+      final body = payload['body'] ??
+          (payload['aps'] != null && payload['aps']['alert'] != null ? payload['aps']['alert']['body'] : null) ??
+          'No Body';
+      final notification = NotificationItem(
+        id: payload['id']?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
+        title: title,
+        body: body,
+        timestamp: DateTime.now(),
+        data: Map<String, dynamic>.from(payload),
+        isRead: false,
+      );
+      if (navigatorKey.currentContext != null) {
+        showNotificationModal(navigatorKey.currentContext!, notification);
+      }
+    }
+    return;
+  });
+}
 
 class FCMService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;

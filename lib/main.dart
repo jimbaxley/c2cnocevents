@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:c2c_noc_events/theme.dart';
@@ -49,6 +50,27 @@ void setupFCMListeners() {
 }
 
 void main() async {
+  // Helper to check for pending iOS notification tap
+  Future<void> checkForInitialiOSTap() async {
+    const MethodChannel notificationTapChannel = MethodChannel('c2c_noc_events/notification_tap');
+    try {
+      final payload = await notificationTapChannel.invokeMethod('getTappedNotification');
+      if (payload != null) {
+        final notification = NotificationItem(
+          id: payload['id']?.toString() ?? DateTime.now().millisecondsSinceEpoch.toString(),
+          title: payload['title']?.toString() ?? 'No Title',
+          body: payload['body']?.toString() ?? 'No Body',
+          timestamp: DateTime.now(),
+          data: Map<String, dynamic>.from(payload),
+          isRead: false,
+        );
+        if (navigatorKey.currentContext != null) {
+          showNotificationModal(navigatorKey.currentContext!, notification);
+        }
+      }
+    } catch (_) {}
+  }
+
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase
@@ -72,7 +94,12 @@ void main() async {
   // Register FCM listeners after runApp so navigatorKey context is available
   setupFCMListeners();
 
-  // Show modal for most recent unread notification if any
+  // Listen for iOS notification tap events via method channel
+  setupiOSNotificationTapListener();
+  // Check for any pending iOS notification tap on launch
+  await checkForInitialiOSTap();
+
+  // Show modal for most recent unread notification if any (fallback)
   if (NotificationStorage.unreadCount > 0 && NotificationStorage.notifications.isNotEmpty) {
     // Wait for navigatorKey context to be available
     Future.delayed(const Duration(seconds: 1), () {
