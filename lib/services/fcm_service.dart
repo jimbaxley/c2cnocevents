@@ -2,6 +2,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'notification_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
+import 'package:c2c_noc_events/widgets/notification_detail_modal.dart';
+import 'package:c2c_noc_events/main.dart';
+import 'package:flutter/widgets.dart';
 
 class FCMService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
@@ -89,9 +92,14 @@ class FCMService {
     print('💾 Notification added to storage (foreground)');
   }
 
+  // Store a pending notification to be shown after the widget tree is ready
+  static NotificationItem? pendingNotification;
+
   // Handle message when app is opened from notification
   static void _handleMessageOpenedApp(RemoteMessage message) {
-    // TODO: Navigate to specific screen based on message data
+    final notification = NotificationItem.fromRemoteMessage(message);
+    pendingNotification = notification;
+    print('🔔 Pending notification set for modal display.');
   }
 
   // Get current FCM token

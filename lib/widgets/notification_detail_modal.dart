@@ -36,8 +36,8 @@ class NotificationDetailModal extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: Text(
-                    'Notification Details',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    notification.title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
                   ),
@@ -52,31 +52,6 @@ class NotificationDetailModal extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Notification title
-            Text(
-              'Title',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w500,
-                  ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              notification.title,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                  ),
-            ),
-            const SizedBox(height: 16),
-
-            // Notification body
-            Text(
-              'Message',
-              style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                    color: Colors.grey[600],
-                    fontWeight: FontWeight.w500,
-                  ),
-            ),
             const SizedBox(height: 4),
             Flexible(
               child: SingleChildScrollView(
@@ -104,33 +79,6 @@ class NotificationDetailModal extends StatelessWidget {
                   ),
             ),
 
-            // Additional data if available
-            if (notification.data != null && notification.data!.isNotEmpty) ...[
-              const SizedBox(height: 16),
-              Text(
-                'Additional Data',
-                style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.w500,
-                    ),
-              ),
-              const SizedBox(height: 4),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  notification.data.toString(),
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        fontFamily: 'monospace',
-                      ),
-                ),
-              ),
-            ],
-
             const SizedBox(height: 24),
 
             // Action buttons
@@ -153,15 +101,6 @@ class NotificationDetailModal extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    if (!notification.isRead)
-                      TextButton(
-                        onPressed: () {
-                          NotificationStorage.markAsRead(notification.id);
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text('Mark as Read'),
-                      ),
-                    const SizedBox(width: 8),
                     ElevatedButton(
                       onPressed: () => Navigator.of(context).pop(),
                       child: const Text('Close'),
@@ -221,6 +160,14 @@ class NotificationDetailModal extends StatelessWidget {
 
 // Helper function to show the modal
 void showNotificationModal(BuildContext context, NotificationItem notification) {
+  // Defensive: check if context is mounted (for StatefulElement)
+  if (context is StatefulElement && !context.mounted) {
+    return;
+  }
+  // Mark as read automatically on open
+  if (!notification.isRead) {
+    NotificationStorage.markAsRead(notification.id);
+  }
   showDialog(
     context: context,
     builder: (context) => NotificationDetailModal(notification: notification),
