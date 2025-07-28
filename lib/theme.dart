@@ -175,7 +175,7 @@ ThemeData get darkTheme => ThemeData(
           borderRadius: BorderRadius.circular(16), // <-- Rounded corners
         ),
 
-        color: const Color.fromARGB(255, 34, 19, 34), // <-- Your desired dark background
+        //color: const Color.fromARGB(255, 34, 19, 34), // <-- Your desired dark background
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: DarkModeColors.darkAppBarBackground,

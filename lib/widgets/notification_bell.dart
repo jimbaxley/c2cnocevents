@@ -12,7 +12,7 @@ class NotificationBell extends StatefulWidget {
 
 class _NotificationBellState extends State<NotificationBell> {
   int _unreadCount = 0;
-  bool isSubscribedToEvents = true;
+  bool isSubscribedToGeneral = true;
   bool isSubscribedToPhoneBanks = false;
   bool isSubscribedToCanvassing = false;
   List<NotificationItem> _notifications = [];
@@ -50,11 +50,11 @@ class _NotificationBellState extends State<NotificationBell> {
     // Build dynamic notification items
     List<PopupMenuEntry<String>> menuItems = [];
 
-    // Recent notifications header
+/*     // Recent notifications header
     menuItems.add(const PopupMenuItem(
       enabled: false,
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 2.0),
+        padding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
         child: Text(
           'Recent Notifications',
           style: TextStyle(
@@ -64,7 +64,7 @@ class _NotificationBellState extends State<NotificationBell> {
           ),
         ),
       ),
-    ));
+    )); */
 
     // Add real notifications or show empty state
     if (_notifications.isEmpty) {
@@ -73,9 +73,9 @@ class _NotificationBellState extends State<NotificationBell> {
         child: ListTile(
           leading: Icon(Icons.inbox_outlined, size: 16),
           title: Text('No notifications yet', style: TextStyle(fontSize: 13, color: Colors.grey)),
-          contentPadding: EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+          contentPadding: EdgeInsets.symmetric(horizontal: 4.0, vertical: -4.0),
           dense: true,
-          minLeadingWidth: 12,
+          minLeadingWidth: 2,
         ),
       ));
     } else {
@@ -102,7 +102,7 @@ class _NotificationBellState extends State<NotificationBell> {
               notification.timeAgo,
               style: const TextStyle(fontSize: 11, color: Colors.grey),
             ),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: -16.0),
             dense: true,
             minLeadingWidth: 12,
           ),
@@ -110,15 +110,10 @@ class _NotificationBellState extends State<NotificationBell> {
       }
     }
 
-    // Add separator
-    menuItems.add(const PopupMenuItem(
-      enabled: false,
-      child: Divider(height: 1),
-    ));
-
     // Clear all option if there are notifications
     if (_notifications.isNotEmpty) {
       menuItems.add(PopupMenuItem(
+        height: 12,
         value: 'clear_all',
         child: ListTile(
           leading: const Icon(Icons.clear_all, size: 16, color: Colors.red),
@@ -126,13 +121,15 @@ class _NotificationBellState extends State<NotificationBell> {
             'Clear All',
             style: TextStyle(fontSize: 13, color: Colors.red),
           ),
-          contentPadding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: 0.0),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 4.0, vertical: -16.0),
           dense: true,
-          minLeadingWidth: 12,
+
+          //minLeadingWidth: 12,
         ),
       ));
 
       menuItems.add(const PopupMenuItem(
+        height: 12,
         enabled: false,
         child: Divider(height: 1),
       ));
@@ -143,7 +140,7 @@ class _NotificationBellState extends State<NotificationBell> {
       const PopupMenuItem(
         enabled: false,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+          padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 0.0),
           child: Text(
             'Subscribed Topics',
             style: TextStyle(
@@ -154,7 +151,7 @@ class _NotificationBellState extends State<NotificationBell> {
           ),
         ),
       ),
-// Events topic
+// General topic
       PopupMenuItem(
         enabled: false,
         child: Row(
@@ -165,17 +162,17 @@ class _NotificationBellState extends State<NotificationBell> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Events', style: TextStyle(fontSize: 13)),
+                  Text('General', style: TextStyle(fontSize: 14, color: Colors.grey)),
                 ],
               ),
             ),
             StatefulBuilder(
               builder: (context, setState) => Switch(
-                value: isSubscribedToEvents,
+                value: isSubscribedToGeneral,
                 onChanged: (val) {
-                  setState(() => isSubscribedToEvents = val);
+                  setState(() => isSubscribedToGeneral = val);
                   // Call your subscribe/unsubscribe logic here
-                  NotificationService.subscribeToTopic('events', val);
+                  NotificationService.subscribeToTopic('general', val);
                 },
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
@@ -183,7 +180,7 @@ class _NotificationBellState extends State<NotificationBell> {
           ],
         ),
       ),
-      // Events topic
+      // Phone Banks topic
       PopupMenuItem(
         enabled: false,
         child: Row(
@@ -194,7 +191,7 @@ class _NotificationBellState extends State<NotificationBell> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Phone Banks', style: TextStyle(fontSize: 13)),
+                  Text('Phone Banks', style: TextStyle(fontSize: 14, color: Colors.grey)),
                 ],
               ),
             ),
@@ -212,7 +209,7 @@ class _NotificationBellState extends State<NotificationBell> {
           ],
         ),
       ),
-// Events topic
+// Canvasses topic
       PopupMenuItem(
         enabled: false,
         child: Row(
@@ -223,7 +220,7 @@ class _NotificationBellState extends State<NotificationBell> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Canvassing', style: TextStyle(fontSize: 13)),
+                  Text('Canvasses', style: TextStyle(fontSize: 14, color: Colors.grey)),
                 ],
               ),
             ),
@@ -233,7 +230,7 @@ class _NotificationBellState extends State<NotificationBell> {
                 onChanged: (val) {
                   setState(() => isSubscribedToCanvassing = val);
                   // Call your subscribe/unsubscribe logic here
-                  NotificationService.subscribeToTopic('canvassing', val);
+                  NotificationService.subscribeToTopic('canvasses', val);
                 },
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
@@ -328,6 +325,7 @@ class _NotificationBellState extends State<NotificationBell> {
           icon: Icon(
             Icons.notifications_outlined,
             color: colorScheme.onSurface,
+            size: 30,
           ),
           onPressed: _showNotificationMenu,
         ),
