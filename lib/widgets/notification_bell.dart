@@ -22,6 +22,15 @@ class _NotificationBellState extends State<NotificationBell> {
     super.initState();
     _loadNotifications();
     NotificationStorage.addListener(_onNotificationsChanged);
+    _loadTopicSubscriptions();
+  }
+
+  Future<void> _loadTopicSubscriptions() async {
+    // Replace with your persistent storage logic if needed
+    isSubscribedToGeneral = await NotificationService.isSubscribedToTopic('general');
+    isSubscribedToPhoneBanks = await NotificationService.isSubscribedToTopic('phonebanks');
+    isSubscribedToCanvassing = await NotificationService.isSubscribedToTopic('canvasses');
+    if (mounted) setState(() {});
   }
 
   @override
