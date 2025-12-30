@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_app_badger/flutter_app_badger.dart';
+import 'package:flutter/foundation.dart';
 
 class NotificationItem {
   final String id;
@@ -90,13 +91,13 @@ class NotificationStorage {
   static int get unreadCount => _notifications.where((n) => !n.isRead).length;
 
   static Future<void> addNotification(NotificationItem notification) async {
-    print('🔔 [NotificationStorage] addNotification called');
+    debugPrint('🔔 [NotificationStorage] addNotification called');
     _notifications.insert(0, notification);
     if (_notifications.length > 50) {
       _notifications.removeRange(50, _notifications.length);
     }
     await saveNotifications();
-    print('💾 [NotificationStorage] Saved. Total: ${_notifications.length}');
+      debugPrint('💾 [NotificationStorage] Saved. Total: ${_notifications.length}');
     _notifyListeners();
 
     // Update badge
@@ -105,7 +106,7 @@ class NotificationStorage {
       try {
         await FlutterAppBadger.updateBadgeCount(unread);
       } catch (e) {
-        print('❌ Badge update failed: $e');
+          debugPrint('❌ Badge update failed: $e');
       }
     } else {
       try {

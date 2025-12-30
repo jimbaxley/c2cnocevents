@@ -165,12 +165,25 @@ class _EventCardState extends State<EventCard> {
                 color: Colors.grey.shade600,
               ),
               const SizedBox(width: 6),
-              Text(
-                '${DateFormat('MMM d, yyyy | h:mm a').format(widget.event.startDate)} ET',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.shade600,
-                  fontWeight: FontWeight.w500,
-                ),
+              Builder(
+                builder: (context) {
+                  final eastern = tz.getLocation('America/New_York');
+                  final startDateEastern = tz.TZDateTime.from(widget.event.startDate.toUtc(), eastern);
+                  String dateStr = DateFormat('MMM d, yyyy').format(startDateEastern);
+                  String timeStr;
+                  if (widget.event.startTime != null && widget.event.startTime!.isNotEmpty) {
+                    timeStr = widget.event.startTime!;
+                  } else {
+                    timeStr = DateFormat('h:mm a').format(startDateEastern);
+                  }
+                  return Text(
+                    '$dateStr | $timeStr ET',
+                    style: theme.textTheme.bodyLarge?.copyWith(
+                      color: Colors.grey.shade600,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -188,7 +201,7 @@ class _EventCardState extends State<EventCard> {
               Expanded(
                 child: Text(
                   widget.event.location,
-                  style: theme.textTheme.bodySmall?.copyWith(
+                  style: theme.textTheme.bodyLarge?.copyWith(
                     color: Colors.grey.shade600,
                     fontWeight: FontWeight.w500,
                     height: 1.3, // Tighter line spacing
@@ -215,16 +228,32 @@ class _EventCardState extends State<EventCard> {
                 onPressed: () {
                   final eastern = tz.getLocation('America/New_York');
                   final startDateEastern = tz.TZDateTime.from(widget.event.startDate.toUtc(), eastern);
+                  // If startTime is present, try to parse it for calendar event
+                  DateTime startDateTime = startDateEastern;
+                  if (widget.event.startTime != null && widget.event.startTime!.isNotEmpty) {
+                    try {
+                      final parsedTime = DateFormat('h:mm a').parse(widget.event.startTime!);
+                      startDateTime = DateTime(
+                        startDateEastern.year,
+                        startDateEastern.month,
+                        startDateEastern.day,
+                        parsedTime.hour,
+                        parsedTime.minute,
+                      );
+                    } catch (_) {
+                      // Fallback to original startDateEastern if parsing fails
+                    }
+                  }
                   final endDateEastern = tz.TZDateTime.from(
-                    (widget.event.endDate ?? widget.event.startDate.add(const Duration(hours: 1))).toUtc(),
+                    widget.event.endDate.toUtc(),
                     eastern,
                   );
                   final calendarEvent = add2cal.Event(
                     title: widget.event.title,
                     description: widget.event.description,
                     location: widget.event.location,
-                    startDate: startDateEastern,
-                    endDate: endDateEastern ?? widget.event.startDate.add(const Duration(hours: 1)),
+                    startDate: startDateTime,
+                    endDate: endDateEastern,
                   );
                   add2cal.Add2Calendar.addEvent2Cal(calendarEvent);
                 },

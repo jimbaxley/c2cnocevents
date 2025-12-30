@@ -1,9 +1,29 @@
 class Event {
+    /// Extracts time (HH:mm or HH:mm:ss) from a datetime string, returns null if not present
+    static String? extractTime(String? dateTimeStr) {
+      if (dateTimeStr == null || dateTimeStr.isEmpty) return null;
+      try {
+        final dt = DateTime.parse(dateTimeStr).toUtc();
+        // Eastern Time is UTC-5 (Standard), UTC-4 (Daylight). For simplicity, use UTC-5.
+        final dtET = dt.subtract(const Duration(hours: 5));
+        // Always show time in 12-hour format with AM/PM and ET suffix
+        return _format12Hour(dtET);
+      } catch (_) {}
+      return null;
+    }
+
+    static String _format12Hour(DateTime dt) {
+      final hour = dt.hour % 12 == 0 ? 12 : dt.hour % 12;
+      final minute = dt.minute.toString().padLeft(2, '0');
+      final period = dt.hour < 12 ? 'AM' : 'PM';
+      return '$hour:$minute $period';
+    }
   final String id;
   final String title;
   final String description;
   final DateTime startDate;
   final DateTime endDate;
+  final String? startTime;
   final String location;
   final String imageUrl;
   final String category;
@@ -22,6 +42,7 @@ class Event {
     required this.description,
     required this.startDate,
     required this.endDate,
+    this.startTime,
     required this.location,
     required this.imageUrl,
     required this.category,
@@ -41,6 +62,7 @@ class Event {
         'description': description,
         'startDate': startDate.toIso8601String(),
         'endDate': endDate.toIso8601String(),
+        'startTime': startTime,
         'location': location,
         'imageUrl': imageUrl,
         'category': category,
@@ -60,6 +82,7 @@ class Event {
         description: json['description'],
         startDate: DateTime.parse(json['startDate']),
         endDate: DateTime.parse(json['endDate']),
+        startTime: json['startTime'],
         location: json['location'],
         imageUrl: json['imageUrl'],
         category: json['category'],
@@ -79,6 +102,7 @@ class Event {
     String? description,
     DateTime? startDate,
     DateTime? endDate,
+    String? startTime,
     String? location,
     String? imageUrl,
     String? category,
@@ -97,6 +121,7 @@ class Event {
         description: description ?? this.description,
         startDate: startDate ?? this.startDate,
         endDate: endDate ?? this.endDate,
+        startTime: startTime ?? this.startTime,
         location: location ?? this.location,
         imageUrl: imageUrl ?? this.imageUrl,
         category: category ?? this.category,

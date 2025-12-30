@@ -1,4 +1,5 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'notification_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:math';
@@ -67,7 +68,7 @@ class FCMService {
     try {
       // Delete old token to force fresh generation
       await _messaging.deleteToken();
-      print('🗑️ Deleted old FCM token');
+        debugPrint('🗑️ Deleted old FCM token');
       
       // Request permission for notifications
       NotificationSettings settings = await _messaging.requestPermission(
@@ -80,27 +81,27 @@ class FCMService {
         sound: true,
       );
 
-      print('📱 Notification Permission Status: ${settings.authorizationStatus}');
+        debugPrint('📱 Notification Permission Status: ${settings.authorizationStatus}');
 
       // Get FRESH FCM token
       String? token = await getToken();
       if (token != null) {
-        print('🔑 NEW FCM Token: $token');
+          debugPrint('🔑 NEW FCM Token: $token');
         await registerToken(token);
       } else {
-        print('⚠️ FCM Token is null');
+          debugPrint('⚠️ FCM Token is null');
       }
 
       // Listen for token refresh
       _messaging.onTokenRefresh.listen((newToken) async {
-        print('🔄 FCM Token refreshed: $newToken');
+          debugPrint('🔄 FCM Token refreshed: $newToken');
         await registerToken(newToken);
       });
 
       // Handle foreground messages
       FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
 
-      print('✅ FCM listeners registered');
+        debugPrint('✅ FCM listeners registered');
 
       // NOTE: Background message handler is registered in main.dart BEFORE Firebase.initializeApp()
       // This is required by Flutter for proper background message handling
@@ -110,19 +111,19 @@ class FCMService {
 
       // Auto-subscribe to general topic
       await subscribeToTopic('general');
-      print('📢 Subscribed to topic: general');
+        debugPrint('📢 Subscribed to topic: general');
     } catch (e) {
       // FCM initialization failed - log for debugging
-      print('❌ FCM initialization error: $e');
+        debugPrint('❌ FCM initialization error: $e');
       rethrow; // Re-throw to see the full error
     }
   }
 
   // Handle foreground messages
   static Future<void> _handleForegroundMessage(RemoteMessage message) async {
-    print('📨 Received foreground message: ${message.notification?.title}');
-    print('   Body: ${message.notification?.body}');
-    print('   Data: ${message.data}');
+    debugPrint('📨 Received foreground message: ${message.notification?.title}');
+    debugPrint('   Body: ${message.notification?.body}');
+    debugPrint('   Data: ${message.data}');
     final notification = NotificationItem.fromRemoteMessage(message);
     await NotificationStorage.addNotification(notification);
   }
@@ -151,7 +152,7 @@ class FCMService {
     try {
       await _messaging.subscribeToTopic(topic);
     } catch (e) {
-      print('❌ Failed to subscribe to topic $topic: $e');
+      debugPrint('❌ Failed to subscribe to topic $topic: $e');
     }
   }
 
@@ -174,11 +175,11 @@ class FCMService {
 // Background message handler (must be top-level function)
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  print('📬 ========== BACKGROUND HANDLER CALLED ==========');
-  print('   Title: ${message.notification?.title}');
-  print('   Body: ${message.notification?.body}');
-  print('   Data: ${message.data}');
-  print('   Has data: ${message.data.isNotEmpty}');
+  debugPrint('📬 ========== BACKGROUND HANDLER CALLED ==========');
+  debugPrint('   Title: ${message.notification?.title}');
+  debugPrint('   Body: ${message.notification?.body}');
+  debugPrint('   Data: ${message.data}');
+  debugPrint('   Has data: ${message.data.isNotEmpty}');
   
   // Store the notification - Firebase is already initialized
   final notification = NotificationItem.fromRemoteMessage(message);
