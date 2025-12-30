@@ -178,10 +178,10 @@ class _NotificationBellState extends State<NotificationBell> {
             StatefulBuilder(
               builder: (context, setState) => Switch(
                 value: isSubscribedToGeneral,
-                onChanged: (val) {
+                onChanged: (val) async {
                   setState(() => isSubscribedToGeneral = val);
                   // Call your subscribe/unsubscribe logic here
-                  NotificationService.subscribeToTopic('general', val);
+                  await NotificationService.subscribeToTopic('general', val);
                 },
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
@@ -207,10 +207,10 @@ class _NotificationBellState extends State<NotificationBell> {
             StatefulBuilder(
               builder: (context, setState) => Switch(
                 value: isSubscribedToPhoneBanks,
-                onChanged: (val) {
+                onChanged: (val) async {
                   setState(() => isSubscribedToPhoneBanks = val);
                   // Call your subscribe/unsubscribe logic here
-                  NotificationService.subscribeToTopic('phonebanks', val);
+                  await NotificationService.subscribeToTopic('phonebanks', val);
                 },
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),
@@ -236,10 +236,10 @@ class _NotificationBellState extends State<NotificationBell> {
             StatefulBuilder(
               builder: (context, setState) => Switch(
                 value: isSubscribedToCanvassing,
-                onChanged: (val) {
+                onChanged: (val) async {
                   setState(() => isSubscribedToCanvassing = val);
                   // Call your subscribe/unsubscribe logic here
-                  NotificationService.subscribeToTopic('canvasses', val);
+                  await NotificationService.subscribeToTopic('canvasses', val);
                 },
                 materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
               ),

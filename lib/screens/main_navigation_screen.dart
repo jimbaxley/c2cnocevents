@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:c2c_noc_events/screens/home_screen.dart';
-import 'package:c2c_noc_events/screens/learn_more_screen.dart';
+import 'package:team_up_nc/screens/home_screen.dart';
+import 'package:team_up_nc/screens/learn_more_screen.dart';
 
 class MainNavigationScreen extends StatefulWidget {
   const MainNavigationScreen({super.key});

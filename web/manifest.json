@@ -1,11 +1,11 @@
 {
-    "name": "dreamflow_counter",
-    "short_name": "dreamflow_counter",
+    "name": "Team Up NC",
+    "short_name": "Team Up NC",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Team Up NC - Modern event notifications app",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

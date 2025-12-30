@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:c2c_noc_events/models/event.dart';
-import 'package:c2c_noc_events/services/event_service.dart';
-//import 'package:c2c_noc_events/services/notification_service.dart';
-import 'package:c2c_noc_events/widgets/event_card.dart';
-import 'package:c2c_noc_events/widgets/notification_bell.dart';
-import 'package:c2c_noc_events/screens/learn_more_screen.dart';
+import 'package:team_up_nc/models/event.dart';
+import 'package:team_up_nc/services/event_service.dart';
+//import 'package:team_up_nc/services/notification_service.dart';
+import 'package:team_up_nc/widgets/event_card.dart';
+import 'package:team_up_nc/widgets/notification_bell.dart';
+import 'package:team_up_nc/screens/learn_more_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -161,11 +161,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    Image.asset(
+                      'assets/images/donkey.png',
+                      height: 32,
+                      width: 32,
+                    ),
+                    const SizedBox(width: 8),
                     Text(
-                      'C2C+NoC',
+                      'Team Up NC',
                       style: theme.textTheme.headlineMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: colorScheme.onSurface,
+                        letterSpacing: -0.5,
                       ),
                     ),
                     const SizedBox(width: 8),

@@ -1,15 +1,15 @@
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:c2c_noc_events/theme.dart';
-import 'package:c2c_noc_events/screens/main_navigation_screen.dart';
-import 'package:c2c_noc_events/config/coda_config.dart';
-import 'package:c2c_noc_events/services/fcm_service.dart';
-import 'package:c2c_noc_events/services/notification_storage.dart';
+import 'package:team_up_nc/theme.dart';
+import 'package:team_up_nc/screens/main_navigation_screen.dart';
+import 'package:team_up_nc/config/coda_config.dart';
+import 'package:team_up_nc/services/fcm_service.dart';
+import 'package:team_up_nc/services/notification_storage.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'firebase_options.dart';
 import 'package:timezone/data/latest.dart' as tzdata;
-import 'package:c2c_noc_events/widgets/notification_detail_modal.dart';
+import 'package:team_up_nc/widgets/notification_detail_modal.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -52,7 +52,7 @@ void setupFCMListeners() {
 void main() async {
   // Helper to check for pending iOS notification tap
   Future<void> checkForInitialiOSTap() async {
-    const MethodChannel notificationTapChannel = MethodChannel('c2c_noc_events/notification_tap');
+    const MethodChannel notificationTapChannel = MethodChannel('team_up_nc/notification_tap');
     try {
       final payload = await notificationTapChannel.invokeMethod('getTappedNotification');
       if (payload != null) {
@@ -72,6 +72,9 @@ void main() async {
   }
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  // CRITICAL: Register background message handler BEFORE Firebase initialization
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
   // Initialize Firebase
   await Firebase.initializeApp(
@@ -127,7 +130,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    // No FCM listeners here; handled globally after runApp
   }
 
   @override
@@ -140,7 +142,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
-      title: 'C2C+NoC',
+      title: 'Team Up NC',
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,

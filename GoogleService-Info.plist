@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.c2cnoc.events</string>
+	<string>com.teamupnc.app</string>
 	<key>PROJECT_ID</key>
 	<string>c2cnocevents</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:149651353441:ios:20fab3b9f42a5579615f20</string>
+	<string>1:149651353441:ios:bb4ebcce1f994048615f20</string>
 </dict>
 </plist>

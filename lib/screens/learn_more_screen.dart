@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-//import 'package:c2c_noc_events/widgets/fcm_status_widget.dart';
+//import 'package:team_up_nc/widgets/fcm_status_widget.dart';
 
 class LearnMoreScreen extends StatelessWidget {
   const LearnMoreScreen({super.key});
 
-  Future<void> _launchC2CNoCWebsite() async {
-    final Uri url = Uri.parse('https://c2cnoc.org');
+  Future<void> _launchTeamUpNCWebsite() async {
+    final Uri url = Uri.parse('https://teamupnc.org');
     try {
       if (await canLaunchUrl(url)) {
         await launchUrl(url, mode: LaunchMode.externalApplication);
@@ -64,7 +64,7 @@ class LearnMoreScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Discover more about C2C+NoC and our mission',
+                      'Discover more about Team Up NC and our mission',
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: colorScheme.onSurface.withValues(alpha: 0.7),
                       ),
@@ -90,7 +90,7 @@ class LearnMoreScreen extends StatelessWidget {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            'About C2C+NoC',
+                            'About Team Up NC',
                             style: theme.textTheme.titleLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
@@ -112,7 +112,7 @@ class LearnMoreScreen extends StatelessWidget {
               // Visit Website Card
               Card(
                 child: InkWell(
-                  onTap: _launchC2CNoCWebsite,
+                  onTap: _launchTeamUpNCWebsite,
                   borderRadius: BorderRadius.circular(12),
                   child: Padding(
                     padding: const EdgeInsets.all(16),
@@ -142,7 +142,7 @@ class LearnMoreScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                'Learn more at c2cnoc.org',
+                                'Learn more at teamupnc.org',
                                 style: theme.textTheme.bodyMedium?.copyWith(
                                   color: colorScheme.onSurface.withValues(alpha: 0.7),
                                 ),

@@ -1,5 +1,5 @@
-import 'package:c2c_noc_events/models/event.dart';
-import 'package:c2c_noc_events/services/coda_service.dart';
+import 'package:team_up_nc/models/event.dart';
+import 'package:team_up_nc/services/coda_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
 

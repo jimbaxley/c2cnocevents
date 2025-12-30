@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCbS_k9WpOR-gnxt7PbuS1K8l3OTGeKkCk',
-    appId: '1:149651353441:android:b25b2e8e86a7aef8615f20',
+    appId: '1:149651353441:android:18205ec8d6245021615f20',
     messagingSenderId: '149651353441',
     projectId: 'c2cnocevents',
     storageBucket: 'c2cnocevents.firebasestorage.app',
@@ -66,10 +66,10 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBKu9Rap1LBVfaE9jlDzC3bOsj3b7OR9o0',
-    appId: '1:149651353441:ios:20fab3b9f42a5579615f20',
+    appId: '1:149651353441:ios:bb4ebcce1f994048615f20',
     messagingSenderId: '149651353441',
     projectId: 'c2cnocevents',
     storageBucket: 'c2cnocevents.firebasestorage.app',
-    iosBundleId: 'com.c2cnoc.events',
+    iosBundleId: 'com.teamupnc.app',
   );
 }

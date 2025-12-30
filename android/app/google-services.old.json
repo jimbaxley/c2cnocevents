@@ -26,9 +26,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:149651353441:android:18205ec8d6245021615f20",
+        "mobilesdk_app_id": "1:149651353441:android:b25b2e8e86a7aef8615f20",
         "android_client_info": {
-          "package_name": "com.teamupnc.app"
+          "package_name": "com.mycompany.CounterApp"
         }
       },
       "oauth_client": [],

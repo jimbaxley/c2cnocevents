@@ -2,28 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LightModeColors {
-  static const lightPrimary = Color(0xFF6366F1);
+  static const lightPrimary = Color(0xFF233C7E);
   static const lightOnPrimary = Color(0xFFFFFFFF);
-  static const lightPrimaryContainer = Color(0xFFE0E7FF);
+  static const lightPrimaryContainer = Color.fromARGB(255, 228, 228, 228);
   static const lightOnPrimaryContainer = Color(0xFF1E1B4B);
   static const lightSecondary = Color(0xFF8B5CF6);
-  static const lightOnSecondary = Color(0xFFFFFFFF);
+  static const lightOnSecondary = Color.fromARGB(255, 231, 231, 231);
   static const lightTertiary = Color(0xFFEC4899);
-  static const lightOnTertiary = Color(0xFFFFFFFF);
+  static const lightOnTertiary = Color.fromARGB(255, 235, 235, 235);
   static const lightError = Color(0xFFEF4444);
   static const lightOnError = Color(0xFFFFFFFF);
   static const lightErrorContainer = Color(0xFFFFDAD6);
   static const lightOnErrorContainer = Color(0xFF410002);
   static const lightInversePrimary = Color(0xFFC6B3F7);
   static const lightShadow = Color(0xFF000000);
-  static const lightSurface = Color(0xFFFFFFFF);
+  static const lightSurface = Color(0xFFF5F5F5);
   static const lightOnSurface = Color(0xFF1F2937);
   static const lightAppBarBackground = Color(0xFFE0E7FF);
 }
 
 class DarkModeColors {
-  static const darkPrimary = Color(0xFF818CF8);
-  static const darkOnPrimary = Color(0xFF1E1B4B);
+  static const darkPrimary = Color(0xFF982F7A);
+  static const darkOnPrimary = Color(0xFFFFFFFF);
   static const darkPrimaryContainer = Color(0xFF3730A3);
   static const darkOnPrimaryContainer = Color(0xFFE0E7FF);
   static const darkSecondary = Color(0xFFA78BFA);

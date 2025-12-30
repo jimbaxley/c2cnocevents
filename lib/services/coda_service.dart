@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:c2c_noc_events/models/event.dart';
-import 'package:c2c_noc_events/config/coda_config.dart';
+import 'package:team_up_nc/models/event.dart';
+import 'package:team_up_nc/config/coda_config.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class CodaService {

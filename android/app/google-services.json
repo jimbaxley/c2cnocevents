@@ -7,28 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:149651353441:android:5821ff6c9a10eaee615f20",
+        "mobilesdk_app_id": "1:149651353441:android:18205ec8d6245021615f20",
         "android_client_info": {
-          "package_name": "com.c2cnoc.events"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCbS_k9WpOR-gnxt7PbuS1K8l3OTGeKkCk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:149651353441:android:b25b2e8e86a7aef8615f20",
-        "android_client_info": {
-          "package_name": "com.mycompany.CounterApp"
+          "package_name": "com.teamupnc.app"
         }
       },
       "oauth_client": [],

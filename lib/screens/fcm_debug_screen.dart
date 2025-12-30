@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:c2c_noc_events/services/fcm_service.dart';
+import 'package:team_up_nc/services/fcm_service.dart';
 
 class FCMDebugScreen extends StatefulWidget {
   const FCMDebugScreen({super.key});

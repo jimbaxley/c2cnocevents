@@ -14,7 +14,7 @@
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
     
     <application
-        android:label="C2CNoC Events"
+        android:label="Team Up NC"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -54,7 +54,7 @@
             android:resource="@android:color/system_accent1_600" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="c2c_events_channel" />
+            android:value="teamupnc_channel" />
             
         <!-- FCM Service -->
         <service

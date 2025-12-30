@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:c2c_noc_events/services/placeholder_image_service.dart';
-import 'package:c2c_noc_events/services/image_cache_service.dart';
-import 'package:c2c_noc_events/config/coda_config.dart';
+import 'package:team_up_nc/services/placeholder_image_service.dart';
+import 'package:team_up_nc/services/image_cache_service.dart';
+import 'package:team_up_nc/config/coda_config.dart';
 
 class ImageService {
   static final ImageService _instance = ImageService._internal();
@@ -26,13 +26,15 @@ class ImageService {
   Color getCategoryColor(String category) {
     switch (category.toUpperCase()) {
       case 'PHONE BANK':
-        return Colors.orange;
+        return const Color(0xFF2499FF); // Bright Blue
       case 'CANVASS':
-        return Colors.cyan;
+        return const Color(0xFF982F7A); // Accent
       case 'HYBRID':
-        return Colors.purple;
+        return const Color(0xFF5C3A88); // Purple
       case 'MEETING':
-        return Colors.blue;
+        return const Color(0xFF233C7E); // Main
+      case 'SOCIAL':
+        return const Color(0xFFFF00DF); // Pink
       case 'TRAINING':
         return Colors.green;
       case 'COMMUNITY':

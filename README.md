@@ -1,6 +1,6 @@
-# 🎉 C2C+NoC Events App
+# 🎉 Team Up NC Events App
 
-A modern Flutter application for managing and viewing events with beautiful card designs and notification capabilities. Built for the C2C+NoC community with secure Firebase Remote Config integration and dynamic Coda data source.
+A modern Flutter application for managing and viewing events with beautiful card designs and notification capabilities. Built for the Team Up NC community with secure Firebase Remote Config integration and dynamic Coda data source.
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.32.7-blue.svg)](https://flutter.dev)
 [![Firebase](https://img.shields.io/badge/Firebase-Remote%20Config-orange.svg)](https://firebase.google.com)
@@ -30,8 +30,8 @@ A modern Flutter application for managing and viewing events with beautiful card
 
 1. **Clone and Navigate**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/C2CNoCEvents.git
-   cd C2CNoCEvents
+   git clone https://github.com/YOUR_USERNAME/TeamUpNC.git
+   cd TeamUpNC
    ```
 
 2. **Install Dependencies**
@@ -131,7 +131,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- C2C+NoC community for requirements and feedback
+- Team Up NC community for requirements and feedback
 - Firebase team for Remote Config capabilities
 - Coda team for flexible API integration
 - Flutter team for the amazing cross-platform framework
@@ -140,4 +140,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Version**: 1.0.1 (Build 4)  
 **Last Updated**: July 2025  
-**Maintainer**: C2C+NoC Development Team
+**Maintainer**: Team Up NC Development Team

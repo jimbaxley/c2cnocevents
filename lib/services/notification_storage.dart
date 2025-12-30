@@ -90,22 +90,27 @@ class NotificationStorage {
   static int get unreadCount => _notifications.where((n) => !n.isRead).length;
 
   static Future<void> addNotification(NotificationItem notification) async {
-    print(
-        '🔔 [NotificationStorage] addNotification called: Title=\\${notification.title}, Body=\\${notification.body}, Data=\\${notification.data}');
+    print('🔔 [NotificationStorage] addNotification called');
     _notifications.insert(0, notification);
     if (_notifications.length > 50) {
       _notifications.removeRange(50, _notifications.length);
     }
     await saveNotifications();
-    print('💾 [NotificationStorage] Notifications saved. Total count: \\${_notifications.length}');
+    print('💾 [NotificationStorage] Saved. Total: ${_notifications.length}');
     _notifyListeners();
 
-    // Set the app badge to the unread count
+    // Update badge
     final unread = unreadCount;
     if (unread > 0) {
-      FlutterAppBadger.updateBadgeCount(unread);
+      try {
+        await FlutterAppBadger.updateBadgeCount(unread);
+      } catch (e) {
+        print('❌ Badge update failed: $e');
+      }
     } else {
-      FlutterAppBadger.removeBadge();
+      try {
+        await FlutterAppBadger.removeBadge();
+      } catch (e) {}
     }
   }
 

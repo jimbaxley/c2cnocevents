@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:c2c_noc_events/models/event.dart';
-import 'package:c2c_noc_events/services/image_service.dart';
+import 'package:team_up_nc/models/event.dart';
+import 'package:team_up_nc/services/image_service.dart';
 import 'package:add_2_calendar/add_2_calendar.dart' as add2cal;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -29,13 +29,15 @@ class _EventCardState extends State<EventCard> {
   Color _getCategoryColor(String category) {
     switch (category.toUpperCase()) {
       case 'PHONE BANK':
-        return Colors.orange;
+        return const Color(0xFF2499FF); // Bright Blue
       case 'CANVASS':
-        return Colors.cyan;
+        return const Color(0xFF982F7A); // Accent
       case 'HYBRID':
-        return Colors.purple;
+        return const Color(0xFF5C3A88); // Purple
       case 'MEETING':
-        return Colors.blue;
+        return const Color(0xFF233C7E); // Main
+      case 'SOCIAL':
+        return const Color(0xFFFF00DF); // Pink
       case 'TRAINING':
         return Colors.green;
       default:
@@ -46,13 +48,15 @@ class _EventCardState extends State<EventCard> {
   Color _getSignUpButtonColor(String category) {
     switch (category.toUpperCase()) {
       case 'PHONE BANK':
-        return Colors.orange;
+        return const Color(0xFF2499FF); // Bright Blue
       case 'CANVASS':
-        return Colors.cyan;
+        return const Color(0xFF982F7A); // Accent
       case 'HYBRID':
-        return Colors.purple;
+        return const Color(0xFF5C3A88); // Purple
       case 'MEETING':
-        return Colors.blue;
+        return const Color(0xFF233C7E); // Main
+      case 'SOCIAL':
+        return const Color(0xFFFF00DF); // Pink
       case 'TRAINING':
         return Colors.green;
       default:
@@ -144,7 +148,7 @@ class _EventCardState extends State<EventCard> {
             widget.event.title.toUpperCase(),
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
-              color: _getCategoryColor(widget.event.category),
+              color: const Color(0xFF233C7E), // Main color
               letterSpacing: 0.5,
               height: 1.2, // Tighter line spacing
             ),

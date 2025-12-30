@@ -1,11 +1,11 @@
-# Contributing to C2C+NoC Events App
+# Contributing to Team Up NC Events App
 
-Thank you for your interest in contributing to the C2C+NoC Events App! We welcome contributions from the community.
+Thank you for your interest in contributing to the Team Up NC Events App! We welcome contributions from the community.
 
 ## 🚀 Getting Started
 
 1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/C2CNoCEvents.git`
+2. Clone your fork: `git clone https://github.com/YOUR_USERNAME/TeamUpNC.git`
 3. Create a new branch: `git checkout -b feature/your-feature-name`
 4. Make your changes
 5. Test your changes thoroughly

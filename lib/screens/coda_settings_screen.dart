@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:c2c_noc_events/services/event_service.dart';
-import 'package:c2c_noc_events/services/coda_service.dart';
-import 'package:c2c_noc_events/config/coda_config.dart';
+import 'package:team_up_nc/services/event_service.dart';
+import 'package:team_up_nc/services/coda_service.dart';
+import 'package:team_up_nc/config/coda_config.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CodaSettingsScreen extends StatefulWidget {
