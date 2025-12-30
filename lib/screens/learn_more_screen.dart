@@ -89,10 +89,13 @@ class LearnMoreScreen extends StatelessWidget {
                             color: colorScheme.primary,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            'About Team Up NC',
-                            style: theme.textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
+                          Flexible(
+                            child: Text(
+                              'About Us',
+                              style: theme.textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ],

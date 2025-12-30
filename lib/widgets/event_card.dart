@@ -24,6 +24,11 @@ class EventCard extends StatefulWidget {
 }
 
 class _EventCardState extends State<EventCard> {
+    // Converts a string to sentence case (first letter uppercase, rest lowercase)
+    String _toSentenceCase(String input) {
+      if (input.isEmpty) return input;
+      return input[0].toUpperCase() + input.substring(1);
+    }
   bool _isDetailsExpanded = false;
 
   Color _getCategoryColor(String category) {
@@ -145,11 +150,11 @@ class _EventCardState extends State<EventCard> {
 
           // Title
           Text(
-            widget.event.title.toUpperCase(),
+            _toSentenceCase(widget.event.title),
             style: theme.textTheme.titleMedium?.copyWith(
               fontWeight: FontWeight.bold,
               color: const Color(0xFF233C7E), // Main color
-              letterSpacing: 0.5,
+              letterSpacing: 0.2,
               height: 1.2, // Tighter line spacing
             ),
             maxLines: 3, // Allow more lines for wrapping
@@ -262,11 +267,11 @@ class _EventCardState extends State<EventCard> {
                   size: 16,
                 ),
                 label: Text(
-                  'ADD TO CALENDAR',
+                  'Add to calendar',
                   style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 12,
-                    letterSpacing: 0.5,
+                    letterSpacing: 0.2,
                   ),
                 ),
                 style: OutlinedButton.styleFrom(
@@ -296,11 +301,11 @@ class _EventCardState extends State<EventCard> {
                   elevation: 0,
                 ),
                 child: Text(
-                  'SIGN UP NOW',
+                  'Sign up now',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
-                    letterSpacing: 0.5,
+                    letterSpacing: 0.2,
                   ),
                 ),
               ),
