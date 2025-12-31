@@ -73,6 +73,7 @@ class CodaService {
       startDate: _parseDate(_getSimpleValue(values, 'c-xM1UXlWtET')),
       endDate: _parseDate(_getSimpleValue(values, 'c-aZDbH3zhAy')),
       startTime: Event.extractTime(_getSimpleValue(values, 'c-AroDWMdVwY')),
+      endTime: Event.extractTime(_getSimpleValue(values, 'c-qS63ogq8vX')),
       location: _getSimpleValue(values, 'c-208f9ghsIT') ?? '',
       imageUrl: imageUrl,
       category: category,

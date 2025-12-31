@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_up_nc/services/coda_service.dart';
 import 'package:intl/intl.dart';
 import 'package:team_up_nc/models/event.dart';
 import 'package:team_up_nc/services/image_service.dart';
@@ -230,10 +231,9 @@ class _EventCardState extends State<EventCard> {
               // Add to Calendar button
 
               OutlinedButton.icon(
-                onPressed: () {
+                onPressed: () async {
                   final eastern = tz.getLocation('America/New_York');
                   final startDateEastern = tz.TZDateTime.from(widget.event.startDate.toUtc(), eastern);
-                  // If startTime is present, try to parse it for calendar event
                   DateTime startDateTime = startDateEastern;
                   if (widget.event.startTime != null && widget.event.startTime!.isNotEmpty) {
                     try {
@@ -249,16 +249,32 @@ class _EventCardState extends State<EventCard> {
                       // Fallback to original startDateEastern if parsing fails
                     }
                   }
-                  final endDateEastern = tz.TZDateTime.from(
-                    widget.event.endDate.toUtc(),
-                    eastern,
-                  );
+
+                  // Use event.endTime if available
+                  DateTime endDateTime = tz.TZDateTime.from(widget.event.endDate.toUtc(), eastern);
+                  if (widget.event.endTime != null && widget.event.endTime!.isNotEmpty) {
+                    try {
+                      final parsedEndTime = DateFormat('h:mm a').parse(widget.event.endTime!);
+                      endDateTime = DateTime(
+                        endDateTime.year,
+                        endDateTime.month,
+                        endDateTime.day,
+                        parsedEndTime.hour,
+                        parsedEndTime.minute,
+                      );
+                    } catch (_) {
+                      // Fallback to original endDateEastern if parsing fails
+                    }
+                  }
+                  if (!endDateTime.isAfter(startDateTime)) {
+                    endDateTime = startDateTime.add(const Duration(hours: 1));
+                  }
                   final calendarEvent = add2cal.Event(
                     title: widget.event.title,
                     description: widget.event.description,
                     location: widget.event.location,
                     startDate: startDateTime,
-                    endDate: endDateEastern,
+                    endDate: endDateTime,
                   );
                   add2cal.Add2Calendar.addEvent2Cal(calendarEvent);
                 },

@@ -24,6 +24,7 @@ class Event {
   final DateTime startDate;
   final DateTime endDate;
   final String? startTime;
+  final String? endTime;
   final String location;
   final String imageUrl;
   final String category;
@@ -43,6 +44,7 @@ class Event {
     required this.startDate,
     required this.endDate,
     this.startTime,
+    this.endTime,
     required this.location,
     required this.imageUrl,
     required this.category,
@@ -63,6 +65,7 @@ class Event {
         'startDate': startDate.toIso8601String(),
         'endDate': endDate.toIso8601String(),
         'startTime': startTime,
+        'endTime': endTime,
         'location': location,
         'imageUrl': imageUrl,
         'category': category,
@@ -83,6 +86,7 @@ class Event {
         startDate: DateTime.parse(json['startDate']),
         endDate: DateTime.parse(json['endDate']),
         startTime: json['startTime'],
+        endTime: json['endTime'],
         location: json['location'],
         imageUrl: json['imageUrl'],
         category: json['category'],
@@ -103,6 +107,7 @@ class Event {
     DateTime? startDate,
     DateTime? endDate,
     String? startTime,
+    String? endTime,
     String? location,
     String? imageUrl,
     String? category,
@@ -122,6 +127,7 @@ class Event {
         startDate: startDate ?? this.startDate,
         endDate: endDate ?? this.endDate,
         startTime: startTime ?? this.startTime,
+        endTime: endTime ?? this.endTime,
         location: location ?? this.location,
         imageUrl: imageUrl ?? this.imageUrl,
         category: category ?? this.category,
