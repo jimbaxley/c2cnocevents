@@ -24,13 +24,31 @@ dependencies:
   timezone: any
   flutter_app_badger: any
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.4.0
 
 flutter:
   uses-material-design: true
-  
   assets:
     - assets/images/
+
+# App icon configuration
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/donkey.png"
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: "assets/images/donkey.png"
+
+# Splash screen configuration
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/donkey.png
+  android: true
+  ios: true
+  web: false
