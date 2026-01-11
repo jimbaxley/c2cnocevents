@@ -82,7 +82,7 @@ class CodaService {
       maxAttendees: 0,
       currentAttendees: 0,
       tags: [],
-      signUpUrl: _getSimpleValue(values, 'c-oQ9f2MSLrG'), // Sign up URL column
+      signUpUrl: _getSimpleValue(values, 'c-PprGbpURVr'), // Sign up URL column
       details: _getSimpleValue(values, 'c-CuhtPto9h7'), // Details column
     );
   }
